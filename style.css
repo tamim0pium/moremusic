@@ -1,0 +1,61 @@
+/* Global */
+html, body { margin:0; padding:0; height:100%; font-family:'Orbitron', sans-serif; background:#0a0011; color:#fff; overflow:hidden; }
+
+/* Intro Overlay */
+#intro{
+  position:fixed; inset:0; display:flex; justify-content:center; align-items:center; background:#000; z-index:10;
+}
+.intro-title{
+  font-size:4em; color:#7a29ff; white-space:nowrap;
+  text-shadow:0 0 15px #8f00ff, 0 0 30px #b366ff;
+  animation: flicker 3s ease-in-out forwards;
+}
+@keyframes flicker{
+  0%,100%{opacity:0.9;}
+  25%{opacity:1;}
+  50%{opacity:0.7;}
+  75%{opacity:1;}
+}
+
+/* Main Content */
+#main-content{
+  position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; height:100vh; text-align:center; opacity:0;
+  animation:showContent 1s forwards; animation-delay:3s;
+}
+@keyframes showContent{ to{opacity:1;} }
+
+/* Titles */
+#main-title{ font-size:3em; color:#7a29ff; text-shadow:0 0 10px #8f00ff,0 0 25px #b366ff; }
+#subtext{ margin-top:10px; color:#b366ff; font-size:1.1em; letter-spacing:1px; }
+.tamim{ color:#ff99ff; text-shadow:0 0 8px #b366ff; }
+
+/* Buttons */
+#buttons{display:flex; gap:20px; margin-top:30px;}
+#buttons button{
+  background:transparent; border:2px solid #7a29ff; color:#b366ff; padding:10px 30px; font-size:1.2em;
+  border-radius:8px; cursor:pointer; text-transform:uppercase; text-shadow:0 0 10px #8f00ff; transition:.3s;
+}
+#buttons button:hover{ background:#7a29ff; color:#fff; box-shadow:0 0 20px #8f00ff; }
+
+/* Email Section */
+#email-section{ margin-top:20px; display:none; }
+.email-bg{
+  background:#1a001a; padding:15px 20px; border-radius:10px;
+  display:flex; gap:10px; align-items:center;
+}
+.email-bg input{ padding:10px 15px; border:2px solid #7a29ff; background:transparent; color:#fff; border-radius:8px; outline:none; }
+.email-bg button{ padding:10px 20px; border:2px solid #7a29ff; background:transparent; color:#b366ff; border-radius:8px; cursor:pointer; transition:.3s; }
+.email-bg button:hover{ background:#7a29ff; color:#fff; box-shadow:0 0 15px #8f00ff; }
+
+/* Loader */
+#loading{ display:none; margin-top:20px; }
+.loader-bg{ position:fixed; inset:0; background:rgba(20,0,20,0.9); display:flex; justify-content:center; align-items:center; z-index:20; }
+.loader{ border:6px solid #f3f3f3; border-top:6px solid #7a29ff; border-radius:50%; width:50px; height:50px; animation:spin 1s linear infinite; }
+@keyframes spin{ 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* Message */
+#message{ font-size:2em; color:#b366ff; text-shadow:0 0 15px #8f00ff; margin-top:20px; }
+
+/* Canvas */
+#bg{ position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
