@@ -1,131 +1,89 @@
-/* iOS-26 Purple Glass — Luxury */
+/* iOS26 Purple Glass + blood-red particle aesthetic */
 :root{
-  --bg-a: #0f0520; /* deep */
-  --bg-b: #2b044b; /* purple */
-  --accent-1: #a86bff;
-  --accent-2: #6ae1ff;
+  --bg-1: #0f0326;
+  --bg-2: #26044b;
   --glass-tint: rgba(255,255,255,0.06);
-  --glass-border: rgba(255,255,255,0.14);
+  --glass-border: rgba(255,255,255,0.12);
+  --accent-a: #b074ff;
+  --accent-b: #7be3ff;
+  --white: #ffffff;
+  --muted: rgba(255,255,255,0.8);
   --card-radius: 18px;
-  --soft: 12px;
-  --glass-strong: rgba(255,255,255,0.12);
-  --muted: rgba(255,255,255,0.65);
-  --shadow: 0 8px 30px rgba(6,3,20,0.55);
+  --shadow: 0 12px 40px rgba(6,3,20,0.55);
 }
 
 /* reset */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Inter, Roboto, Arial; -webkit-font-smoothing:antialiased;}
-body{
-  background: linear-gradient(135deg,var(--bg-a), var(--bg-b));
-  color:#fff;
-  overflow:hidden;
-}
+html,body{height:100%;margin:0;font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Inter, Roboto, Arial; -webkit-font-smoothing:antialiased;background:linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--white); overflow:hidden;}
 
-/* canvas-layer = animated gradient + subtle glare */
-#canvas-layer{
-  position:fixed;inset:0;z-index:0;
+/* background layer */
+#bg-layer{
+  position:fixed; inset:0; z-index:0;
   background:
-    radial-gradient(800px 400px at 10% 20%, rgba(168,107,255,0.12), transparent 8%),
-    radial-gradient(700px 350px at 80% 75%, rgba(106,225,255,0.08), transparent 10%),
-    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-  filter: blur(18px) saturate(110%);
-  transition: transform 0.12s linear;
+    radial-gradient(600px 300px at 10% 20%, rgba(183,116,255,0.12), transparent 6%),
+    radial-gradient(600px 320px at 80% 75%, rgba(123,227,255,0.08), transparent 6%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+  filter:blur(18px) saturate(120%);
+  transition:transform .12s linear;
   pointer-events:none;
 }
 
-/* Stage / layout */
-#stage{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:40px;}
-.card{
-  width:min(980px,94%);
-  max-width:980px;
-  padding:34px;
+/* glass base */
+.glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
   border-radius:var(--card-radius);
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
   border:1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(12px) saturate(120%);
 }
 
-/* content */
-.brand{text-align:center;margin-bottom:18px}
-#brand{
-  font-weight:700;
-  font-size:42px;
-  letter-spacing:2px;
-  margin:0;
-  background: linear-gradient(90deg,var(--accent-1), var(--accent-2));
-  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-  transform: translateZ(0);
-  transition: transform .35s cubic-bezier(.2,.9,.3,1), filter .35s;
-}
-.sub{
-  margin:8px 0 0 0;
-  color:var(--muted);
-  font-weight:600;
-  opacity:0.95;
-  letter-spacing:0.6px;
-}
-.tamim{color: #f0e7ff; font-weight:800}
+/* Intro overlay */
+.overlay-intro{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:6}
+.intro-card{padding:34px 36px; text-align:center; max-width:720px; width:92%}
+.intro-title{font-size:48px;margin:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.intro-sub{margin-top:10px;color:var(--muted);font-weight:600}
 
-/* controls */
-.controls{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:20px;flex-wrap:wrap}
-.btn{
-  padding:10px 20px;border-radius:12px;border:1px solid transparent;font-weight:700;cursor:pointer;
-  transition: transform .18s ease, box-shadow .18s ease, background .18s;
-  letter-spacing:1px;
-  backdrop-filter: blur(6px);
-}
+/* Buttons */
+.intro-ctas{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:10px 20px;border-radius:12px;border:1px solid transparent;font-weight:700;cursor:pointer;transition:transform .18s ease, box-shadow .18s}
 .btn:active{transform:translateY(1px)}
-.btn.primary{
-  background: linear-gradient(90deg, rgba(168,107,255,0.18), rgba(106,225,255,0.12));
-  color: #fcfbff;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 6px 20px rgba(60,20,80,0.28);
-}
-.btn.ghost{
-  background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.06);
-}
+.btn.primary{background:linear-gradient(90deg, rgba(176,116,255,0.16), rgba(123,227,255,0.12)); color:var(--white); border:1px solid rgba(255,255,255,0.06)}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
 
-/* email wrap = floating glass */
-.emailWrap{
-  margin:18px auto 0 auto;
-  display:flex;gap:10px;align-items:center;justify-content:center;
-  padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
-  width:clamp(260px,44%,360px);
-}
-.emailWrap input{
-  flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
-  background:transparent;color:#fff;outline:none;font-weight:600;
-}
-.small{padding:8px 12px;font-size:0.92rem;border-radius:8px}
+/* Main content */
+.hidden{display:none}
+main#main{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
+.center-card{width:min(880px,92%);padding:36px;text-align:center}
+#brand{font-size:40px;margin:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
+#byline{margin-top:8px;color:var(--muted);font-weight:600}
 
-/* status */
-.status{min-height:40px;margin-top:12px;text-align:center;color:var(--muted);font-weight:600}
+/* Actions */
+#actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.message{margin-top:20px;font-weight:800;letter-spacing:1px;color:var(--accent-a)}
 
-/* loader overlay */
-.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:6}
+/* Modal (notify) */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:8}
+.modal.hidden{display:none}
+.modal-card{width:min(520px,92%);padding:20px;border-radius:14px;text-align:center}
+.row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:12px}
+input[type="email"]{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);outline:none;min-width:0;flex:1}
+.small{padding:8px 12px;font-size:.95rem}
+
+/* Loader overlay */
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9}
 .overlay.hidden{display:none}
-.loaderGlass{
-  width:220px;padding:22px;border-radius:14px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-  border:1px solid rgba(255,255,255,0.06);
-  text-align:center;backdrop-filter: blur(10px);
-}
-.loaderRing{
-  width:64px;height:64px;border-radius:50%;margin:0 auto 12px auto;
-  border:6px solid rgba(255,255,255,0.06); border-top-color: rgba(168,107,255,0.95);
-  animation:spin 0.95s linear infinite;
-  box-shadow:0 6px 20px rgba(80,30,120,0.12);
-}
-.loaderText{font-weight:800;letter-spacing:1px;color:var(--muted)}
+.loader-glass{padding:20px;width:220px;text-align:center;border-radius:14px}
+.ring{width:64px;height:64px;border-radius:50%;margin:0 auto 12px auto;border:6px solid rgba(255,255,255,0.06);border-top-color:var(--accent-a);animation:spin .95s linear infinite;box-shadow:0 6px 20px rgba(80,30,120,0.12)}
+.load-text{font-weight:800;letter-spacing:1px;color:var(--muted)}
 
-/* small responsiveness */
+/* particles canvas will sit above bg-layer but behind content */
+#particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* responsive */
 @media (max-width:720px){
+  .intro-title{font-size:34px}
   #brand{font-size:28px}
-  .card{padding:22px}
-  .emailWrap{width:90%}
+  .intro-card{padding:24px}
 }
 
 /* spin */

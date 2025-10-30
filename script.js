@@ -1,103 +1,132 @@
-// iOS26 purple glass experience — interactions + parallax lighting
-
-/* helper DOM */
-const canvasLayer = document.getElementById('canvas-layer');
-const brand = document.getElementById('brand');
+// iOS26 purple glass landing — with blood-red chaotic particles
+// Elements
+const intro = document.getElementById('intro');
+const main = document.getElementById('main');
 const enterBtn = document.getElementById('enterBtn');
+const enterBtn2 = document.getElementById('enterBtn2');
 const notifyBtn = document.getElementById('notifyBtn');
-const emailWrap = document.getElementById('emailWrap');
-const sendEmail = document.getElementById('sendEmail');
-const emailInput = document.getElementById('email');
-const status = document.getElementById('status');
-const loaderOverlay = document.getElementById('loaderOverlay');
+const notifyBtn2 = document.getElementById('notifyBtn2');
+const notifyModal = document.getElementById('notifyModal');
+const closeModal = document.getElementById('closeModal');
+const submitEmail = document.getElementById('submitEmail');
+const emailInput = document.getElementById('emailInput');
+const loader = document.getElementById('loader');
+const message = document.getElementById('message');
+const statusEl = document.getElementById('notifyStatus');
+const bgLayer = document.getElementById('bg-layer');
+const audio = document.getElementById('bg-audio');
 
-/* Parallax light follow (mouse / touch) */
-let pointer = { x: 0.5, y: 0.5 };
-function setLight(x, y){
-  // transform pointer 0..1 into small translate for canvas layer
+// Particles canvas (blood-red chaotic)
+const pCanvas = document.createElement('canvas');
+pCanvas.id = 'particle-canvas';
+document.body.appendChild(pCanvas);
+const pCtx = pCanvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = pCanvas.width = window.innerWidth;
+  H = pCanvas.height = window.innerHeight;
+  initParticles();
+}
+window.addEventListener('resize', resize);
+
+function initParticles() {
+  particles = [];
+  const count = Math.floor((W * H) / 6000); // dense
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.6,
+      vx: (Math.random() - 0.5) * 3.2, // faster chaotic
+      vy: (Math.random() - 0.5) * 3.2,
+      alpha: 0.25 + Math.random() * 0.7
+    });
+  }
+}
+
+function animateParticles() {
+  pCtx.clearRect(0, 0, W, H);
+  // subtle translucent overlay to create motion trails
+  pCtx.fillStyle = 'rgba(6,2,12,0.12)';
+  pCtx.fillRect(0, 0, W, H);
+
+  for (let p of particles) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < -10) p.x = W + 10;
+    if (p.x > W + 10) p.x = -10;
+    if (p.y < -10) p.y = H + 10;
+    if (p.y > H + 10) p.y = -10;
+
+    pCtx.beginPath();
+    pCtx.fillStyle = `rgba(180,8,8,${p.alpha})`; // blood-red tint
+    pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    pCtx.fill();
+  }
+  requestAnimationFrame(animateParticles);
+}
+
+// Parallax light effect based on pointer
+function setLight(x, y) {
   const tx = (x - 0.5) * 40;
   const ty = (y - 0.5) * 24;
-  canvasLayer.style.transform = `translate(${tx}px, ${ty}px)`;
-  // subtle brand tilt
-  brand.style.transform = `translate3d(${tx*0.08}px, ${ty*0.08}px, 0)`;
+  bgLayer.style.transform = `translate(${tx}px, ${ty}px)`;
 }
-window.addEventListener('pointermove', (e)=>{
-  const x = e.clientX / window.innerWidth;
-  const y = e.clientY / window.innerHeight;
-  pointer.x = x; pointer.y = y;
-  setLight(x, y);
+window.addEventListener('pointermove', (e) => {
+  setLight(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
 });
-window.addEventListener('touchmove', (e)=>{
-  if(!e.touches || e.touches.length===0) return;
-  const t = e.touches[0];
-  const x = t.clientX / window.innerWidth;
-  const y = t.clientY / window.innerHeight;
-  setLight(x, y);
+window.addEventListener('touchmove', (e) => {
+  if (!e.touches || e.touches.length === 0) return;
+  setLight(e.touches[0].clientX / window.innerWidth, e.touches[0].clientY / window.innerHeight);
 });
 
-/* ENTER flow: show loader 2s then message */
-enterBtn.addEventListener('click', ()=>{
-  status.textContent = '';
-  loaderOverlay.classList.remove('hidden');
-  loaderOverlay.setAttribute('aria-hidden', 'false');
-
-  setTimeout(()=>{
-    loaderOverlay.classList.add('hidden');
-    loaderOverlay.setAttribute('aria-hidden', 'true');
-    status.textContent = 'THE CURE IS COMING';
-    // subtle pulse on status
-    status.animate([{opacity:0},{opacity:1}], {duration:420, fill:'forwards'});
+// Intro flow: when ENTER clicked, show loader 2s then reveal main and message
+function showLoaderThenMessage() {
+  loader.classList.remove('hidden');
+  setTimeout(() => {
+    loader.classList.add('hidden');
+    intro.classList.add('hidden');
+    main.classList.remove('hidden');
+    message.classList.remove('hidden');
+    message.animate([{opacity:0},{opacity:1}], {duration:420, fill:'forwards'});
   }, 2000);
+}
+
+enterBtn?.addEventListener('click', ()=>{ playAudio(); showLoaderThenMessage(); });
+enterBtn2?.addEventListener('click', ()=>{ playAudio(); showLoaderThenMessage(); });
+
+// Notify modal
+function openNotify(){ notifyModal.classList.remove('hidden'); statusEl.textContent = ''; emailInput.value = ''; emailInput.focus(); }
+function closeNotify(){ notifyModal.classList.add('hidden'); }
+notifyBtn?.addEventListener('click', openNotify);
+notifyBtn2?.addEventListener('click', openNotify);
+closeModal?.addEventListener('click', closeNotify);
+
+submitEmail?.addEventListener('click', ()=>{
+  const val = (emailInput.value||'').trim();
+  if(!val || !val.includes('@')){ statusEl.textContent = 'Enter valid email'; return; }
+  const arr = JSON.parse(localStorage.getItem('mm_emails')||'[]');
+  arr.push({email:val, t:(new Date()).toISOString()});
+  localStorage.setItem('mm_emails', JSON.stringify(arr));
+  statusEl.textContent = 'Thanks — you are on the list';
+  setTimeout(()=> closeNotify(), 900);
 });
 
-/* NOTIFY flow: reveal email input with glass */
-notifyBtn.addEventListener('click', () => {
-  const isShown = !emailWrap.classList.contains('hidden');
-  if(isShown){
-    // hide
-    emailWrap.classList.add('hidden');
-    emailWrap.style.display = 'none';
-  } else {
-    // show elegantly
-    emailWrap.classList.remove('hidden');
-    emailWrap.style.display = 'flex';
-    emailInput.focus();
-  }
-});
+// Audio autoplay with fallback to first interaction
+function playAudio(){
+  audio.volume = 0;
+  audio.play().then(()=>{
+    let vol = 0;
+    const f = setInterval(()=>{ vol += 0.02; if(vol>=0.35){ vol=0.35; clearInterval(f);} audio.volume = vol; }, 100);
+  }).catch(()=>{
+    document.body.addEventListener('click', ()=>{ audio.play(); }, {once:true});
+  });
+}
 
-/* SUBMIT: store in localStorage (demo) and toast */
-document.getElementById('sendEmail')?.addEventListener('click', ()=>{
-  const val = (emailInput.value || '').trim();
-  if(!val || !val.includes('@')){
-    status.textContent = 'Enter a valid email';
-    return;
-  }
-  const list = JSON.parse(localStorage.getItem('mm_list') || '[]');
-  list.push({email: val, t: new Date().toISOString()});
-  localStorage.setItem('mm_list', JSON.stringify(list));
-  status.textContent = 'You are on the list — thanks!';
-  emailInput.value = '';
-  // hide input after success
-  setTimeout(()=> {
-    emailWrap.classList.add('hidden');
-    emailWrap.style.display = 'none';
-  }, 900);
-});
-
-/* small UX: close email input on Escape */
-window.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape'){
-    emailWrap.classList.add('hidden');
-    emailWrap.style.display = 'none';
-  }
-});
-
-/* init positions / small entrance */
+// start everything
 window.addEventListener('load', ()=>{
-  // start centered light slightly offset
-  setLight(0.52, 0.46);
-
-  // ensure emailWrap hidden by default (CSS safe)
-  emailWrap.classList.add('hidden');
-  emailWrap.style.display = 'none';
+  resize();
+  animateParticles();
+  // keep intro visible on load; main hidden until user enters
 });
+

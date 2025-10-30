@@ -1,43 +1,67 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MORE MUSIC -- The Future Experience</title>
+  <title>MORE MUSIC — The iOS26 Experience</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Dynamic gradient + glare layers -->
-  <div id="canvas-layer" aria-hidden="true"></div>
+  <!-- Purple glass dynamic background -->
+  <div id="bg-layer" aria-hidden="true"></div>
 
-  <main id="stage" role="main" aria-labelledby="brand">
-    <div class="glass card">
-      <div class="brand">
-        <h1 id="brand">MORE MUSIC</h1>
-        <p class="sub">An exclusive experience by <span class="tamim">TAMIMOPIUM</span></p>
-      </div>
-
-      <div class="controls">
+  <!-- Intro overlay -->
+  <div id="intro" class="overlay-intro">
+    <div class="intro-card glass">
+      <h1 class="intro-title">MORE MUSIC</h1>
+      <p class="intro-sub">An exclusive experience by <strong>TAMIMOPIUM</strong></p>
+      <div class="intro-ctas">
         <button id="enterBtn" class="btn primary">ENTER</button>
         <button id="notifyBtn" class="btn ghost">NOTIFY ME</button>
       </div>
+    </div>
+  </div>
 
-      <div id="emailWrap" class="emailWrap hidden glass">
-        <input id="email" type="email" placeholder="your@email.com" />
-        <button id="sendEmail" class="btn small">SUBMIT</button>
+  <!-- Main content (revealed after intro) -->
+  <main id="main" class="hidden">
+    <div class="center-card glass">
+      <h1 id="brand">MORE MUSIC</h1>
+      <p id="byline">An exclusive experience by <strong>TAMIMOPIUM</strong></p>
+      <div id="actions">
+        <button id="enterBtn2" class="btn primary">ENTER</button>
+        <button id="notifyBtn2" class="btn ghost">NOTIFY ME</button>
       </div>
 
-      <div id="status" class="status" aria-live="polite"></div>
+      <div id="message" class="message hidden">THE CURE IS COMING</div>
     </div>
   </main>
 
-  <!-- Loader overlay -->
-  <div id="loaderOverlay" class="overlay hidden" aria-hidden="true">
-    <div class="loaderGlass glass">
-      <div class="loaderRing" aria-hidden="true"></div>
-      <div class="loaderText">LOADING</div>
+  <!-- Notify modal -->
+  <div id="notifyModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card glass">
+      <h3>Get notified</h3>
+      <p class="muted">Drop your email — we'll let you know when the release drops.</p>
+      <div class="row">
+        <input id="emailInput" type="email" placeholder="you@inbox.com" />
+        <button id="submitEmail" class="btn primary small">SUBMIT</button>
+      </div>
+      <button id="closeModal" class="btn link">Cancel</button>
+      <p id="notifyStatus" class="muted small"></p>
     </div>
   </div>
+
+  <!-- Loader overlay (glass) -->
+  <div id="loader" class="overlay hidden" aria-hidden="true">
+    <div class="loader-glass glass">
+      <div class="ring" aria-hidden="true"></div>
+      <div class="load-text">LOADING</div>
+    </div>
+  </div>
+
+  <!-- Background audio (looping hum) -->
+  <audio id="bg-audio" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/29/audio_0fc8bfe3b1.mp3?filename=dark-ambient-hum-110787.mp3" type="audio/mpeg">
+  </audio>
 
   <script src="script.js"></script>
 </body>
