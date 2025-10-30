@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MORE MUSIC — The iOS26 Experience</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MORE MUSIC — iOS26 Experience</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Purple glass dynamic background -->
-  <div id="bg-layer" aria-hidden="true"></div>
+  <!-- Background layer -->
+  <div id="bg-layer"></div>
 
   <!-- Intro overlay -->
   <div id="intro" class="overlay-intro">
@@ -22,27 +22,20 @@
     </div>
   </div>
 
-  <!-- Main content (revealed after intro) -->
+  <!-- Main content -->
   <main id="main" class="hidden">
     <div class="center-card glass">
-      <h1 id="brand">MORE MUSIC</h1>
-      <p id="byline">An exclusive experience by <strong>TAMIMOPIUM</strong></p>
-      <div id="actions">
-        <button id="enterBtn2" class="btn primary">ENTER</button>
-        <button id="notifyBtn2" class="btn ghost">NOTIFY ME</button>
-      </div>
-
       <div id="message" class="message hidden">THE CURE IS COMING</div>
     </div>
   </main>
 
   <!-- Notify modal -->
-  <div id="notifyModal" class="modal hidden" role="dialog" aria-modal="true">
+  <div id="notifyModal" class="modal hidden">
     <div class="modal-card glass">
-      <h3>Get notified</h3>
-      <p class="muted">Drop your email — we'll let you know when the release drops.</p>
+      <h3>Get Notified</h3>
+      <p class="muted">Enter your email to get updates.</p>
       <div class="row">
-        <input id="emailInput" type="email" placeholder="you@inbox.com" />
+        <input id="emailInput" type="email" placeholder="you@inbox.com">
         <button id="submitEmail" class="btn primary small">SUBMIT</button>
       </div>
       <button id="closeModal" class="btn link">Cancel</button>
@@ -50,18 +43,16 @@
     </div>
   </div>
 
-  <!-- Loader overlay (glass) -->
-  <div id="loader" class="overlay hidden" aria-hidden="true">
+  <!-- Loader overlay -->
+  <div id="loader" class="overlay hidden">
     <div class="loader-glass glass">
-      <div class="ring" aria-hidden="true"></div>
+      <div class="ring"></div>
       <div class="load-text">LOADING</div>
     </div>
   </div>
 
-  <!-- Background audio (looping hum) -->
-  <audio id="bg-audio" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/03/29/audio_0fc8bfe3b1.mp3?filename=dark-ambient-hum-110787.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Particle canvas -->
+  <canvas id="particle-canvas"></canvas>
 
   <script src="script.js"></script>
 </body>

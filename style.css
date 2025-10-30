@@ -1,90 +1,79 @@
-/* iOS26 Purple Glass + blood-red particle aesthetic */
 :root{
-  --bg-1: #0f0326;
-  --bg-2: #26044b;
-  --glass-tint: rgba(255,255,255,0.06);
-  --glass-border: rgba(255,255,255,0.12);
-  --accent-a: #b074ff;
-  --accent-b: #7be3ff;
-  --white: #ffffff;
-  --muted: rgba(255,255,255,0.8);
-  --card-radius: 18px;
-  --shadow: 0 12px 40px rgba(6,3,20,0.55);
+  --bg-1:#1b0035;
+  --bg-2:#3c005c;
+  --glass-border:rgba(255,255,255,0.12);
+  --accent-a:#b074ff;
+  --accent-b:#7be3ff;
+  --white:#fff;
+  --muted:rgba(255,255,255,0.7);
+  --card-radius:18px;
+  --shadow:0 12px 40px rgba(6,3,20,0.55);
 }
 
-/* reset */
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Inter, Roboto, Arial; -webkit-font-smoothing:antialiased;background:linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--white); overflow:hidden;}
+/* Reset */
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, Roboto, Arial; background:linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--white); overflow:hidden;}
 
-/* background layer */
+/* Background layer */
 #bg-layer{
   position:fixed; inset:0; z-index:0;
-  background:
-    radial-gradient(600px 300px at 10% 20%, rgba(183,116,255,0.12), transparent 6%),
-    radial-gradient(600px 320px at 80% 75%, rgba(123,227,255,0.08), transparent 6%),
-    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
-  filter:blur(18px) saturate(120%);
-  transition:transform .12s linear;
-  pointer-events:none;
+  background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  filter:blur(16px) saturate(120%);
 }
 
-/* glass base */
+/* Glass base */
 .glass{
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-  border-radius:var(--card-radius);
-  border:1px solid var(--glass-border);
-  box-shadow:var(--shadow);
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
   backdrop-filter: blur(12px) saturate(120%);
 }
 
 /* Intro overlay */
-.overlay-intro{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:6}
-.intro-card{padding:34px 36px; text-align:center; max-width:720px; width:92%}
-.intro-title{font-size:48px;margin:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
-.intro-sub{margin-top:10px;color:var(--muted);font-weight:600}
+.overlay-intro{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:6;}
+.intro-card{padding:36px;text-align:center;max-width:720px;width:92%;}
+.intro-title{font-size:48px;margin:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+.intro-sub{margin-top:10px;color:var(--muted);font-weight:600;}
 
 /* Buttons */
-.intro-ctas{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn{padding:10px 20px;border-radius:12px;border:1px solid transparent;font-weight:700;cursor:pointer;transition:transform .18s ease, box-shadow .18s}
-.btn:active{transform:translateY(1px)}
-.btn.primary{background:linear-gradient(90deg, rgba(176,116,255,0.16), rgba(123,227,255,0.12)); color:var(--white); border:1px solid rgba(255,255,255,0.06)}
-.btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+.intro-ctas{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:10px 20px;border-radius:12px;border:1px solid transparent;font-weight:700;cursor:pointer;transition:transform .18s ease, box-shadow .18s;}
+.btn:active{transform:translateY(1px);}
+.btn.primary{background:linear-gradient(90deg, rgba(176,116,255,0.16), rgba(123,227,255,0.12)); color:var(--white); border:1px solid rgba(255,255,255,0.06);}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);}
+.btn.link{background:none;color:var(--muted);border:none;padding:6px 0;cursor:pointer;}
+.btn.small{padding:6px 10px;font-size:0.95rem;}
 
 /* Main content */
-.hidden{display:none}
-main#main{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
-.center-card{width:min(880px,92%);padding:36px;text-align:center}
-#brand{font-size:40px;margin:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
-#byline{margin-top:8px;color:var(--muted);font-weight:600}
+.hidden{display:none;}
+main#main{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;}
+.center-card{width:min(880px,92%);padding:36px;text-align:center;}
+.message{font-size:32px;margin:0;color:var(--accent-a);font-weight:800;opacity:0;transition:opacity .6s;}
 
-/* Actions */
-#actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.message{margin-top:20px;font-weight:800;letter-spacing:1px;color:var(--accent-a)}
-
-/* Modal (notify) */
-.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:8}
-.modal.hidden{display:none}
-.modal-card{width:min(520px,92%);padding:20px;border-radius:14px;text-align:center}
-.row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:12px}
-input[type="email"]{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);outline:none;min-width:0;flex:1}
-.small{padding:8px 12px;font-size:.95rem}
+/* Modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:8;}
+.modal.hidden{display:none;}
+.modal-card{width:min(520px,92%);padding:24px;border-radius:14px;text-align:center;}
+.row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:12px;}
+input[type="email"]{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);outline:none;flex:1;}
 
 /* Loader overlay */
-.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9}
-.overlay.hidden{display:none}
-.loader-glass{padding:20px;width:220px;text-align:center;border-radius:14px}
-.ring{width:64px;height:64px;border-radius:50%;margin:0 auto 12px auto;border:6px solid rgba(255,255,255,0.06);border-top-color:var(--accent-a);animation:spin .95s linear infinite;box-shadow:0 6px 20px rgba(80,30,120,0.12)}
-.load-text{font-weight:800;letter-spacing:1px;color:var(--muted)}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9;}
+.overlay.hidden{display:none;}
+.loader-glass{padding:20px;width:220px;text-align:center;border-radius:14px;}
+.ring{width:64px;height:64px;border-radius:50%;margin:0 auto 12px auto;border:6px solid rgba(255,255,255,0.06);border-top-color:var(--accent-a);animation:spin 0.95s linear infinite;}
+.load-text{font-weight:800;letter-spacing:1px;color:var(--muted);}
 
-/* particles canvas will sit above bg-layer but behind content */
-#particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+/* Particle canvas */
+#particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
 
-/* responsive */
-@media (max-width:720px){
-  .intro-title{font-size:34px}
-  #brand{font-size:28px}
-  .intro-card{padding:24px}
-}
-
-/* spin */
+/* Spin animation */
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* Responsive */
+@media (max-width:720px){
+  .intro-title{font-size:34px;}
+  .message{font-size:24px;}
+  .intro-card{padding:24px;}
+}
