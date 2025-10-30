@@ -1,37 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MORE MUSIC</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MORE MUSIC — The Drop</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Animated background -->
+  <canvas id="bg"></canvas>
 
-<!-- Background shapes -->
-<canvas id="bg"></canvas>
+  <!-- Center card -->
+  <main id="card" role="main" aria-labelledby="site-title">
+    <h1 id="site-title">MORE MUSIC</h1>
+    <p id="tagline">a new chapter — by TAMIMOPIUM</p>
 
-<div id="main-content">
-  <h1 id="title">MORE MUSIC</h1>
-  <p id="subtitle">An exclusive experience by <span class="tamim">TAMIMOPIUM</span></p>
+    <div id="ctas">
+      <button id="enterBtn" class="btn primary">ENTER THE DROP</button>
+      <button id="joinBtn" class="btn ghost">JOIN THE LIST</button>
+    </div>
 
-  <div id="buttons">
-    <button id="enter-btn">ENTER</button>
-    <button id="notify-btn">NOTIFY ME</button>
+    <p id="micro">Exclusive releases • Lyric visuals • Direct from the artist</p>
+  </main>
+
+  <!-- Join modal (hidden) -->
+  <div id="joinModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="join-title">
+    <div class="modal-card">
+      <h3 id="join-title">Join the list</h3>
+      <p class="muted">Drop your email and we’ll send the release link.</p>
+      <div class="row">
+        <input id="emailInput" type="email" placeholder="you@inbox.com" />
+        <button id="submitEmail" class="btn primary small">Submit</button>
+      </div>
+      <button id="closeModal" class="btn link">Cancel</button>
+      <p id="joinNote" class="muted small hide"></p>
+    </div>
   </div>
 
-  <div id="email-section" class="hidden">
-    <input type="email" id="email" placeholder="Enter your email">
-    <button id="submit-email">SUBMIT</button>
+  <!-- Loader overlay (progress bar) -->
+  <div id="loaderOverlay" class="overlay hidden" aria-hidden="true">
+    <div class="loader-card">
+      <div class="loader-title">Preparing the drop</div>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
   </div>
 
-  <div id="loader" class="hidden">
-    <div class="spinner"></div>
-  </div>
-
-  <h2 id="message" class="hidden">THE CURE IS COMING</h2>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
