@@ -1,49 +1,41 @@
-<!doctype html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MORE MUSIC — The Drop</title>
+  <title>MORE MUSIC -- The Future Experience</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Animated background -->
-  <canvas id="bg"></canvas>
+  <!-- Dynamic gradient + glare layers -->
+  <div id="canvas-layer" aria-hidden="true"></div>
 
-  <!-- Center card -->
-  <main id="card" role="main" aria-labelledby="site-title">
-    <h1 id="site-title">MORE MUSIC</h1>
-    <p id="tagline">a new chapter — by TAMIMOPIUM</p>
+  <main id="stage" role="main" aria-labelledby="brand">
+    <div class="glass card">
+      <div class="brand">
+        <h1 id="brand">MORE MUSIC</h1>
+        <p class="sub">An exclusive experience by <span class="tamim">TAMIMOPIUM</span></p>
+      </div>
 
-    <div id="ctas">
-      <button id="enterBtn" class="btn primary">ENTER THE DROP</button>
-      <button id="joinBtn" class="btn ghost">JOIN THE LIST</button>
+      <div class="controls">
+        <button id="enterBtn" class="btn primary">ENTER</button>
+        <button id="notifyBtn" class="btn ghost">NOTIFY ME</button>
+      </div>
+
+      <div id="emailWrap" class="emailWrap hidden glass">
+        <input id="email" type="email" placeholder="your@email.com" />
+        <button id="sendEmail" class="btn small">SUBMIT</button>
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
     </div>
-
-    <p id="micro">Exclusive releases • Lyric visuals • Direct from the artist</p>
   </main>
 
-  <!-- Join modal (hidden) -->
-  <div id="joinModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="join-title">
-    <div class="modal-card">
-      <h3 id="join-title">Join the list</h3>
-      <p class="muted">Drop your email and we’ll send the release link.</p>
-      <div class="row">
-        <input id="emailInput" type="email" placeholder="you@inbox.com" />
-        <button id="submitEmail" class="btn primary small">Submit</button>
-      </div>
-      <button id="closeModal" class="btn link">Cancel</button>
-      <p id="joinNote" class="muted small hide"></p>
-    </div>
-  </div>
-
-  <!-- Loader overlay (progress bar) -->
+  <!-- Loader overlay -->
   <div id="loaderOverlay" class="overlay hidden" aria-hidden="true">
-    <div class="loader-card">
-      <div class="loader-title">Preparing the drop</div>
-      <div class="progress">
-        <div class="progress-bar" id="progressBar" style="width:0%"></div>
-      </div>
+    <div class="loaderGlass glass">
+      <div class="loaderRing" aria-hidden="true"></div>
+      <div class="loaderText">LOADING</div>
     </div>
   </div>
 

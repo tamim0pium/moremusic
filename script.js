@@ -1,146 +1,103 @@
-/* Plan-D fresh hostable landing page script */
+// iOS26 purple glass experience — interactions + parallax lighting
 
-/* ---------- animated background (soft orbs + subtle waves) ---------- */
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let W, H, orbs = [];
-
-function resize() {
-  W = canvas.width = innerWidth;
-  H = canvas.height = innerHeight;
-  initOrbs();
-}
-window.addEventListener('resize', resize);
-
-function initOrbs() {
-  orbs = [];
-  const count = Math.max(8, Math.floor((W * H) / 90000)); // scales with screen
-  for (let i = 0; i < count; i++) {
-    orbs.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: 60 + Math.random() * 100,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.15,
-      hue: 200 + Math.random() * 40,
-      alpha: 0.08 + Math.random() * 0.12
-    });
-  }
-}
-
-function drawBackground() {
-  ctx.clearRect(0, 0, W, H);
-  // soft gradient underlay
-  const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, '#f7fbff');
-  g.addColorStop(1, '#e6f1ff');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-
-  // orbs
-  for (let o of orbs) {
-    o.x += o.vx;
-    o.y += o.vy;
-    if (o.x < -o.r) o.x = W + o.r;
-    if (o.x > W + o.r) o.x = -o.r;
-    if (o.y < -o.r) o.y = H + o.r;
-    if (o.y > H + o.r) o.y = -o.r;
-
-    const orb = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-    orb.addColorStop(0, `hsla(${o.hue},90%,65%,${o.alpha})`);
-    orb.addColorStop(1, `hsla(${o.hue},90%,60%,0)`);
-    ctx.fillStyle = orb;
-    ctx.beginPath();
-    ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  requestAnimationFrame(drawBackground);
-}
-
-/* ------ UI interactions: enter loader + join modal + email storage ------- */
+/* helper DOM */
+const canvasLayer = document.getElementById('canvas-layer');
+const brand = document.getElementById('brand');
 const enterBtn = document.getElementById('enterBtn');
-const joinBtn  = document.getElementById('joinBtn');
+const notifyBtn = document.getElementById('notifyBtn');
+const emailWrap = document.getElementById('emailWrap');
+const sendEmail = document.getElementById('sendEmail');
+const emailInput = document.getElementById('email');
+const status = document.getElementById('status');
 const loaderOverlay = document.getElementById('loaderOverlay');
-const progressBar = document.getElementById('progressBar');
-const joinModal = document.getElementById('joinModal');
-const closeModal = document.getElementById('closeModal');
-const submitEmail = document.getElementById('submitEmail');
-const emailInput = document.getElementById('emailInput');
-const joinNote = document.getElementById('joinNote');
-const message = document.getElementById('message');
 
-enterBtn.addEventListener('click', () => {
-  showLoader(1600, () => {
-    // after loader completes
-    showMessage('THE CURE IS COMING');
-  });
+/* Parallax light follow (mouse / touch) */
+let pointer = { x: 0.5, y: 0.5 };
+function setLight(x, y){
+  // transform pointer 0..1 into small translate for canvas layer
+  const tx = (x - 0.5) * 40;
+  const ty = (y - 0.5) * 24;
+  canvasLayer.style.transform = `translate(${tx}px, ${ty}px)`;
+  // subtle brand tilt
+  brand.style.transform = `translate3d(${tx*0.08}px, ${ty*0.08}px, 0)`;
+}
+window.addEventListener('pointermove', (e)=>{
+  const x = e.clientX / window.innerWidth;
+  const y = e.clientY / window.innerHeight;
+  pointer.x = x; pointer.y = y;
+  setLight(x, y);
+});
+window.addEventListener('touchmove', (e)=>{
+  if(!e.touches || e.touches.length===0) return;
+  const t = e.touches[0];
+  const x = t.clientX / window.innerWidth;
+  const y = t.clientY / window.innerHeight;
+  setLight(x, y);
 });
 
-function showLoader(duration = 1600, cb) {
+/* ENTER flow: show loader 2s then message */
+enterBtn.addEventListener('click', ()=>{
+  status.textContent = '';
   loaderOverlay.classList.remove('hidden');
-  progressBar.style.width = '0%';
-  const start = performance.now();
-  function tick(now) {
-    const pct = Math.min(1, (now - start) / duration);
-    progressBar.style.width = `${Math.round(pct * 100)}%`;
-    if (pct < 1) requestAnimationFrame(tick);
-    else {
-      setTimeout(()=>{ loaderOverlay.classList.add('hidden'); }, 220);
-      if (typeof cb === 'function') cb();
-    }
-  }
-  requestAnimationFrame(tick);
-}
+  loaderOverlay.setAttribute('aria-hidden', 'false');
 
-function showMessage(text) {
-  // create ephemeral message element inside the card
-  let el = document.getElementById('planMessage');
-  if (!el) {
-    el = document.createElement('h2');
-    el.id = 'planMessage';
-    el.style.marginTop = '22px';
-    el.style.color = '#093247';
-    el.style.fontWeight = '700';
-    document.getElementById('card')?.appendChild(el);
-  }
-  el.textContent = text;
-}
-
-/* Join modal */
-joinBtn.addEventListener('click', () => {
-  joinModal.classList.remove('hidden');
-  joinNote.classList.add('hide');
-  emailInput.value = '';
+  setTimeout(()=>{
+    loaderOverlay.classList.add('hidden');
+    loaderOverlay.setAttribute('aria-hidden', 'true');
+    status.textContent = 'THE CURE IS COMING';
+    // subtle pulse on status
+    status.animate([{opacity:0},{opacity:1}], {duration:420, fill:'forwards'});
+  }, 2000);
 });
-closeModal?.addEventListener('click', () => joinModal.classList.add('hidden'));
 
-submitEmail.addEventListener('click', () => {
+/* NOTIFY flow: reveal email input with glass */
+notifyBtn.addEventListener('click', () => {
+  const isShown = !emailWrap.classList.contains('hidden');
+  if(isShown){
+    // hide
+    emailWrap.classList.add('hidden');
+    emailWrap.style.display = 'none';
+  } else {
+    // show elegantly
+    emailWrap.classList.remove('hidden');
+    emailWrap.style.display = 'flex';
+    emailInput.focus();
+  }
+});
+
+/* SUBMIT: store in localStorage (demo) and toast */
+document.getElementById('sendEmail')?.addEventListener('click', ()=>{
   const val = (emailInput.value || '').trim();
-  if (!val || !val.includes('@')) {
-    joinNote.textContent = 'Please enter a valid email';
-    joinNote.classList.remove('hide'); return;
+  if(!val || !val.includes('@')){
+    status.textContent = 'Enter a valid email';
+    return;
   }
-  // save to localStorage as demo
-  const list = JSON.parse(localStorage.getItem('moremusic_list')||'[]');
-  list.push({email: val, t: (new Date()).toISOString()});
-  localStorage.setItem('moremusic_list', JSON.stringify(list));
-  joinNote.textContent = 'Thanks — you are on the list!';
-  joinNote.classList.remove('hide');
-  setTimeout(()=> joinModal.classList.add('hidden'), 1000);
-});
-
-/* keyboard / escape close */
-window.addEventListener('keydown', (e)=>{
-  if (e.key === 'Escape') joinModal.classList.add('hidden');
-});
-
-/* start it */
-window.addEventListener('load', ()=>{
-  resize();
-  drawBackground();
-  // small delayed message to ensure card exists
+  const list = JSON.parse(localStorage.getItem('mm_list') || '[]');
+  list.push({email: val, t: new Date().toISOString()});
+  localStorage.setItem('mm_list', JSON.stringify(list));
+  status.textContent = 'You are on the list — thanks!';
+  emailInput.value = '';
+  // hide input after success
   setTimeout(()=> {
-    // no initial messages
-  }, 250);
+    emailWrap.classList.add('hidden');
+    emailWrap.style.display = 'none';
+  }, 900);
+});
+
+/* small UX: close email input on Escape */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){
+    emailWrap.classList.add('hidden');
+    emailWrap.style.display = 'none';
+  }
+});
+
+/* init positions / small entrance */
+window.addEventListener('load', ()=>{
+  // start centered light slightly offset
+  setLight(0.52, 0.46);
+
+  // ensure emailWrap hidden by default (CSS safe)
+  emailWrap.classList.add('hidden');
+  emailWrap.style.display = 'none';
 });
